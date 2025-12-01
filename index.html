@@ -1,43 +1,124 @@
-# MeMes' World - Meme Drop Website
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeMes' World - Drop A Meme</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-laugh-beam"></i>
+                Welcome to the MeMes' World
+            </h1>
+            <p class="subtitle">Share your funniest memes with the world!</p>
+        </header>
 
-A simple, clean website where strangers can drop memes without logging in. Once submitted, memes cannot be deleted.
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Meme Submission Form -->
+            <section class="submission-section">
+                <div class="form-container">
+                    <h2><i class="fas fa-upload"></i> Drop A Meme</h2>
+                    <form id="memeForm" class="meme-form">
+                        <div class="form-group">
+                            <label for="memeTitle">Meme Title</label>
+                            <input type="text" id="memeTitle" placeholder="Enter a funny title..." required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="memeImage">Image URL</label>
+                            <input type="url" id="memeImage" placeholder="https://example.com/your-meme.jpg" required>
+                            <small class="hint">Paste direct image link (JPG, PNG, GIF)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="memeAuthor">Your Name (Optional)</label>
+                            <input type="text" id="memeAuthor" placeholder="Anonymous Memer">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="memeCategory">Category</label>
+                            <select id="memeCategory">
+                                <option value="funny">Funny</option>
+                                <option value="dank">Dank</option>
+                                <option value="wholesome">Wholesome</option>
+                                <option value="relatable">Relatable</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Meme
+                        </button>
+                        
+                        <div class="disclaimer">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Once submitted, memes cannot be deleted. Keep it clean!
+                        </div>
+                    </form>
+                </div>
+            </section>
 
-## Features
-- No login required
-- Permanent meme submissions (cannot be deleted)
-- Clean, modern design
-- Responsive layout
-- Category filtering
-- Anonymous or named submissions
+            <!-- Explore Memes Section -->
+            <section class="gallery-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-compass"></i> Explore Memes</h2>
+                    <div class="controls">
+                        <button id="refreshBtn" class="refresh-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <select id="filterCategory" class="filter-select">
+                            <option value="all">All Categories</option>
+                            <option value="funny">Funny</option>
+                            <option value="dank">Dank</option>
+                            <option value="wholesome">Wholesome</option>
+                            <option value="relatable">Relatable</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="memeGrid" class="meme-grid">
+                    <!-- Memes will be loaded here -->
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Loading memes...
+                    </div>
+                </div>
+                
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="fas fa-images"></i>
+                    <h3>No memes yet</h3>
+                    <p>Be the first to drop a meme!</p>
+                </div>
+            </section>
+        </main>
 
-## How to Use
-1. Open `index.html` in your browser
-2. Fill in the meme details:
-   - Title
-   - Image URL (direct link)
-   - Your name (optional)
-   - Category
-3. Click "Submit Meme"
-4. View memes in the gallery section
+        <!-- Footer -->
+        <footer class="footer">
+            <p>MeMes' World &copy; 2025 | Memes are permanent once submitted</p>
+            <p class="github-link">
+                <i class="fab fa-github"></i>
+                <a href="https://github.com/yourusername/meme-drop-site" target="_blank">View on GitHub</a>
+            </p>
+        </footer>
+    </div>
 
-## Setup for GitHub Pages
-1. Create a new GitHub repository
-2. Upload all files to the repository
-3. Go to Settings → Pages
-4. Set source to "main branch"
-5. Your site will be live at: `https://[username].github.io/[repository-name]`
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>Meme Submitted!</h2>
+            <p>Your meme has been added to the collection. It cannot be deleted.</p>
+            <button class="modal-btn" onclick="closeModal()">Awesome!</button>
+        </div>
+    </div>
 
-## Important Notes
-- Memes are stored in browser's localStorage (for demo purposes)
-- For production, you would need a backend server with a proper database
-- Image URLs must be direct links to images
-
-## Technologies Used
-- HTML5
-- CSS3 (with Flexbox and Grid)
-- JavaScript (Vanilla)
-- Font Awesome icons
-- Unsplash images for samples
-
-## License
-MIT License - Feel free to use and modify!
+    <script src="script.js"></script>
+</body>
+</html>
