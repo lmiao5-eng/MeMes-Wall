@@ -110,7 +110,7 @@ nav a:hover:not(.current) {
    PRIMARY ACTIONS
 --------------------------- */
 .primary-actions {
-  margin: 10px 0 22px 0;
+  margin: 10px 0 10px 0;
 }
 
 /* Drop A Meme button */
@@ -132,6 +132,19 @@ nav a:hover:not(.current) {
 #dropzone:hover {
   background: #f0f0f0;
   border-color: #888;
+}
+
+/* gallery link under button */
+.gallery-link {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #777;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gallery-link:hover {
+  color: #444;
 }
 
 /* --------------------------
@@ -272,6 +285,9 @@ for (let i = 0; i < 18; i++) {
 
   <div class="primary-actions">
     <div id="dropzone">Drop A Meme</div>
+    <div class="gallery-link" onclick="location.href='gallery.html'">
+      Open Meme Gallery →
+    </div>
   </div>
 
   <div id="grid" class="grid"></div>
@@ -290,7 +306,7 @@ for (let i = 0; i < 18; i++) {
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 <script>
-// --------- FIREBASE CONFIG (your real project) ---------
+// --------- FIREBASE CONFIG ---------
 const firebaseConfig = {
   apiKey: "AIzaSyCX45PRa3xc9tDnPC5zVxaFHaaijB1g2Xk",
   authDomain: "memes--world-6276b.firebaseapp.com",
@@ -361,7 +377,7 @@ async function handleFiles(files) {
   }
 }
 
-// --------- DISPLAY NEWEST MEMES ---------
+// --------- DISPLAY NEWEST 18 MEMES ---------
 const grid = document.getElementById("grid");
 
 function render(docs) {
@@ -386,7 +402,6 @@ function render(docs) {
     grid.appendChild(tile);
   });
 
-  // optional placeholders to keep grid full
   const remain = 18 - docs.length;
   for (let i = 0; i < remain; i++) {
     const placeholder = document.createElement("div");
