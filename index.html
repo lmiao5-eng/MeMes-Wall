@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MeMes' World</title>
+  <title>MeMes' World – Newest</title>
 
   <style>
     * { box-sizing: border-box; }
@@ -11,19 +11,59 @@
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background: radial-gradient(circle at top left, #f7f3ff 0%, #f3fbff 40%, #fdf7f3 100%);
+      color: #111;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 40px;
-      color: #111;
+      padding: 40px 16px;
+      background: radial-gradient(circle at top left, #f7f3ff 0%, #f3fbff 40%, #fdf7f3 100%);
+      animation: bgShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgShift {
+      0%   { background-position: 0% 0%; }
+      50%  { background-position: 50% 50%; }
+      100% { background-position: 100% 0%; }
+    }
+
+    /* subtle floating particles */
+    .bg-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .bg-particles span {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.6);
+      filter: blur(2px);
+      opacity: 0.4;
+      animation: float 26s linear infinite;
+    }
+    .bg-particles span:nth-child(1) { top: 80%; left: 15%; animation-duration: 28s; }
+    .bg-particles span:nth-child(2) { top: 10%; left: 45%; animation-duration: 22s; }
+    .bg-particles span:nth-child(3) { top: 30%; left: 80%; animation-duration: 32s; }
+    .bg-particles span:nth-child(4) { top: 60%; left: 60%; animation-duration: 24s; }
+    .bg-particles span:nth-child(5) { top: 20%; left: 8%;  animation-duration: 30s; }
+    .bg-particles span:nth-child(6) { top: 75%; left: 90%; animation-duration: 26s; }
+
+    @keyframes float {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 0.5; }
+      50%  { opacity: 0.8; }
+      100% { transform: translateY(-160px) translateX(80px); opacity: 0; }
     }
 
     .container {
       width: 100%;
       max-width: 1100px;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.94);
       border-radius: 26px;
-      padding: 28px 36px 34px;
+      padding: 24px 28px 30px;
       box-shadow:
         0 18px 60px rgba(15,23,42,0.18),
         0 0 0 1px rgba(255,255,255,0.8);
@@ -31,16 +71,24 @@
       position: relative;
     }
 
+    .header-shell {
+      background: rgba(255,255,255,0.98);
+      border-radius: 999px;
+      padding: 12px 20px;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.08);
+      margin-bottom: 20px;
+    }
+
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 28px;
+      gap: 16px;
     }
 
     h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
     }
 
@@ -50,15 +98,14 @@
       margin-top: 2px;
     }
 
-    /* nav pills */
     nav {
       display: inline-flex;
       padding: 4px;
       border-radius: 999px;
       background: #f3f3f5;
       gap: 2px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06) inset;
     }
+
     nav a {
       font-size: 14px;
       padding: 6px 16px;
@@ -67,12 +114,14 @@
       color: #555;
       border: 1px solid transparent;
     }
+
     nav a.current {
       background: #111;
       border-color: #111;
       color: #fff;
       font-weight: 500;
     }
+
     nav a:hover:not(.current) {
       background: #e7e7ea;
     }
@@ -80,7 +129,8 @@
     .top-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
+      align-items: center;
+      margin-bottom: 14px;
       padding: 0 4px;
       font-size: 16px;
     }
@@ -116,7 +166,7 @@
       background: #fef7f3;
       border-color: #ffb27c;
       transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 26px rgba(255,184,119,0.65);
     }
     .dropzone.dragover {
       background: #fff3e5;
@@ -137,9 +187,10 @@
       border-radius: 14px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(15,23,42,0.04);
-      transition: transform 0.15s ease;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.06);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, box-shadow 0.25s ease;
     }
+
     .tile img {
       position: absolute;
       inset: 0;
@@ -148,9 +199,10 @@
       object-fit: cover;
       transition: transform 0.25s ease;
     }
+
     .tile:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 26px rgba(15,23,42,0.18);
+      box-shadow: 0 12px 30px rgba(79,70,229,0.25), 0 0 0 1px rgba(255,255,255,0.6);
     }
     .tile:hover img {
       transform: scale(1.03);
@@ -171,7 +223,7 @@
       position: absolute;
       bottom: 8px;
       right: 8px;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.94);
       border-radius: 999px;
       padding: 2px 8px;
       font-size: 11px;
@@ -180,10 +232,20 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 4px 10px rgba(15,23,42,0.14);
+      box-shadow: 0 4px 10px rgba(15,23,42,0.16);
     }
     .like-btn:hover {
       background: #ffe4ef;
+    }
+
+    .fade-item {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .fade-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .note {
@@ -193,11 +255,21 @@
       color: #888;
     }
 
+    footer {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #aaa;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     #backToTop {
       position: fixed;
-      left: 24px;
-      bottom: 24px;
-      background: rgba(255,255,255,0.85);
+      left: 20px;
+      bottom: 20px;
+      background: rgba(255,255,255,0.9);
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid #ddd;
@@ -207,30 +279,54 @@
       transition: opacity .25s ease, transform .25s ease;
       font-size: 13px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      z-index: 10;
     }
     #backToTop.show {
       opacity: 1;
       transform: translateY(0);
     }
-    
+
     input[type=file] { display: none; }
+
+    /* Mobile tweaks */
+    @media (max-width: 900px) {
+      body { padding: 24px 10px; }
+      .container { padding: 20px 18px 26px; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      .header-shell { border-radius: 20px; }
+      header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      nav { align-self: stretch; justify-content: space-between; }
+      .top-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .note { text-align: left; }
+    }
   </style>
 </head>
 
 <body>
+  <!-- floating particles -->
+  <div class="bg-particles">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
   <div class="container">
+    <div class="header-shell">
+      <header>
+        <div>
+          <h1>Welcome to the MeMes’ World</h1>
+          <div class="tagline">Drop your memes into the commons, no need to log in.</div>
+        </div>
 
-    <header>
-      <div>
-        <h1>Welcome to the MeMes’ World</h1>
-        <div class="tagline">Drop your memes into the commons, no need to log in.</div>
-      </div>
-
-      <nav>
-        <a href="index.html" class="current">Newest</a>
-        <a href="top.html">Top Memes</a>
-      </nav>
-    </header>
+        <nav>
+          <a href="index.html" class="current">Newest</a>
+          <a href="top.html">Top Memes</a>
+        </nav>
+      </header>
+    </div>
 
     <div class="top-row">
       <div class="explore-link" onclick="location.href='top.html'">Explore More</div>
@@ -241,6 +337,10 @@
     <input id="fileInput" type="file" accept="image/*" />
 
     <div class="note">Once you drop a meme, you can’t delete it.</div>
+    <footer>
+      <span>MeMes’ World · for strangers on the internet.</span>
+      <span>Built with Cloudinary &amp; Firestore.</span>
+    </footer>
   </div>
 
   <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑ Back to Top</button>
@@ -250,9 +350,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // ---- FIREBASE CONFIG ----
+    // ---- FIREBASE CONFIG (use your real values) ----
     const firebaseConfig = {
-      apiKey: "AIzaSyC4SFP...REPLACE",
+      apiKey: "AIzaSyC4SFPaa3c9tDnPC5zVxaFHaaijBIG2Xk",
       authDomain: "memes-world-6276b.firebaseapp.com",
       projectId: "memes-world-6276b",
       storageBucket: "memes-world-6276b.appspot.com",
@@ -263,13 +363,24 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ---- CLOUDINARY CONFIG ----
+    // Cloudinary
     const cloudName = "dnwhmng9l";
     const uploadPreset = "unsigned_meme_upload";
 
     const grid = document.getElementById("grid");
     const dropzone = document.getElementById("dropzone");
     const fileInput = document.getElementById("fileInput");
+    const backToTop = document.getElementById("backToTop");
+
+    // IntersectionObserver for fade-in tiles
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
 
     async function uploadToCloudinary(file) {
       const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
@@ -282,14 +393,13 @@
       return data.secure_url;
     }
 
-    // Time ago formatter
     function timeAgo(ts) {
       if (!ts) return "";
       const sec = (Date.now() - ts.toMillis()) / 1000;
       if (sec < 60) return "just now";
-      if (sec < 3600) return Math.floor(sec/60)+"m ago";
-      if (sec < 86400) return Math.floor(sec/3600)+"h ago";
-      return Math.floor(sec/86400)+"d ago";
+      if (sec < 3600) return Math.floor(sec/60) + "m ago";
+      if (sec < 86400) return Math.floor(sec/3600) + "h ago";
+      return Math.floor(sec/86400) + "d ago";
     }
 
     async function handleFiles(files) {
@@ -300,17 +410,16 @@
 
       try {
         const imageUrl = await uploadToCloudinary(file);
-
         await db.collection("memes").add({
           url: imageUrl,
           likes: 0,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-
         dropzone.textContent = "Drop A Meme";
       } catch (e) {
+        console.error(e);
         dropzone.textContent = "Failed";
-        setTimeout(()=>dropzone.textContent="Drop A Meme",1500);
+        setTimeout(() => dropzone.textContent = "Drop A Meme", 1500);
       }
     }
 
@@ -319,44 +428,41 @@
       docs.forEach(doc => {
         const d = doc.data();
         const tile = document.createElement("div");
-        tile.className = "tile";
+        tile.className = "tile fade-item";
         tile.innerHTML = `
-          <img src="${d.url}" />
+          <img src="${d.url}" alt="meme" />
           <div class="time-label">${timeAgo(d.createdAt)}</div>
-          <button class="like-btn">❤️ <span class="count">${d.likes||0}</span></button>
+          <button class="like-btn">❤️ <span class="count">${d.likes || 0}</span></button>
         `;
 
-        // Like button
         tile.querySelector(".like-btn").onclick = () => {
           db.collection("memes").doc(doc.id).update({
-            likes: (d.likes||0) + 1
+            likes: (d.likes || 0) + 1
           });
         };
 
         grid.appendChild(tile);
+        observer.observe(tile);
       });
 
-      // fill empty grid cells up to 18
       const remain = 18 - docs.length;
       for (let i = 0; i < remain; i++) {
         const placeholder = document.createElement("div");
-        placeholder.className = "tile";
+        placeholder.className = "tile fade-item";
         grid.appendChild(placeholder);
+        observer.observe(placeholder);
       }
     }
 
-    // Live Firestore listener
     db.collection("memes")
-      .orderBy("createdAt","desc")
+      .orderBy("createdAt", "desc")
       .limit(18)
       .onSnapshot(snap => renderTiles(snap.docs));
 
     dropzone.onclick = () => fileInput.click();
     fileInput.onchange = e => handleFiles(e.target.files);
 
-    dropzone.ondragover = e => {
-      e.preventDefault(); dropzone.classList.add("dragover");
-    };
+    dropzone.ondragover = e => { e.preventDefault(); dropzone.classList.add("dragover"); };
     dropzone.ondragleave = () => dropzone.classList.remove("dragover");
     dropzone.ondrop = e => {
       e.preventDefault();
@@ -364,10 +470,8 @@
       handleFiles(e.dataTransfer.files);
     };
 
-    // Back to top logic
-    const backToTop = document.getElementById("backToTop");
-    window.addEventListener("scroll",()=>{
-      if (window.scrollY>140) backToTop.classList.add("show");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 140) backToTop.classList.add("show");
       else backToTop.classList.remove("show");
     });
   </script>
