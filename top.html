@@ -6,6 +6,9 @@
 <title>MeMes’ World – Top Memes</title>
 
 <style>
+/* --------------------------
+   GLOBAL + BODY
+--------------------------- */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -43,7 +46,9 @@ body {
   to   { transform: translateY(-60vh) scale(0.6); opacity: 0; }
 }
 
-/* main card */
+/* --------------------------
+   MAIN CARD
+--------------------------- */
 .container {
   max-width: 1150px;
   margin: 40px auto 70px;
@@ -62,12 +67,14 @@ body {
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* header */
+/* --------------------------
+   HEADER
+--------------------------- */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 12px;
 }
 
 .tagline {
@@ -76,6 +83,7 @@ header {
   color: #666;
 }
 
+/* nav pills */
 nav {
   display: flex;
   background: #f3f3f5;
@@ -100,14 +108,16 @@ nav a:hover:not(.current) {
 
 /* back link */
 .back-link {
-  margin-bottom: 12px;
+  margin: 8px 0 20px 0;
   font-size: 14px;
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-/* grid */
+/* --------------------------
+   GRID
+--------------------------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -132,6 +142,8 @@ nav a:hover:not(.current) {
   object-fit: cover;
   transition: transform .25s ease;
 }
+
+/* glowing hover */
 .tile:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 30px rgba(255,144,212,0.25);
@@ -166,7 +178,9 @@ nav a:hover:not(.current) {
   cursor: pointer;
 }
 
-/* footer + back to top */
+/* --------------------------
+   FOOTER + BACK TO TOP
+--------------------------- */
 footer {
   margin-top: 18px;
   text-align: right;
@@ -176,9 +190,9 @@ footer {
 
 #backToTop {
   position: fixed;
-  left: 24px;
+  left: 24px;          /* left-bottom corner */
   bottom: 24px;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.85);
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid #ddd;
@@ -186,16 +200,25 @@ footer {
   opacity: 0;
   transform: translateY(6px);
   transition: 0.25s ease;
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
 }
 #backToTop.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* mobile */
+/* --------------------------
+   MOBILE
+--------------------------- */
 @media (max-width: 650px) {
-  .container { padding: 24px; }
-  nav a { padding: 6px 12px; }
+  .container {
+    padding: 24px;
+  }
+  nav a {
+    padding: 6px 12px;
+  }
 }
 </style>
 </head>
@@ -220,13 +243,16 @@ for (let i = 0; i < 18; i++) {
       <h1>Top Memes</h1>
       <div class="tagline">Drop your memes into the commons, no need to log in.</div>
     </div>
+
     <nav>
       <a href="index.html">Newest</a>
       <a href="top.html" class="current">Top Memes</a>
     </nav>
   </header>
 
-  <div class="back-link" onclick="location.href='index.html'">← Back to Newest</div>
+  <div class="back-link" onclick="location.href='index.html'">
+    ← Back to Newest
+  </div>
 
   <div id="grid" class="grid"></div>
 
@@ -260,11 +286,11 @@ const db = firebase.firestore();
 
 function timeAgo(ts) {
   if (!ts) return "just now";
-  const sec = (Date.now() - ts.toMillis())/1000;
-  if (sec < 60) return "just now";
-  if (sec < 3600) return Math.floor(sec/60)+"m ago";
-  if (sec < 86400) return Math.floor(sec/3600)+"h ago";
-  return Math.floor(sec/86400)+"d ago";
+  const sec = (Date.now() - ts.toMillis()) / 1000;
+  if (sec < 60)   return "just now";
+  if (sec < 3600) return Math.floor(sec/60)   + "m ago";
+  if (sec < 86400)return Math.floor(sec/3600) + "h ago";
+  return Math.floor(sec/86400) + "d ago";
 }
 
 const grid = document.getElementById("grid");
@@ -284,30 +310,29 @@ function renderTop(docs) {
 
     tile.querySelector(".like-btn").onclick = () => {
       db.collection("memes").doc(doc.id).update({
-        likes: (d.likes||0) + 1
+        likes: (d.likes || 0) + 1
       });
     };
 
     grid.appendChild(tile);
   });
 
-  // if no memes yet, show placeholders (optional)
-  if (docs.length === 0) {
-    for (let i = 0; i < 18; i++) {
-      const placeholder = document.createElement("div");
-      placeholder.className = "tile";
-      grid.appendChild(placeholder);
-    }
+  // Optional: fill up to 18 tiles with placeholders
+  const remain = 18 - docs.length;
+  for (let i = 0; i < remain; i++) {
+    const placeholder = document.createElement("div");
+    placeholder.className = "tile";
+    grid.appendChild(placeholder);
   }
 }
 
-// order by likes (descending). newly uploaded memes with 0 likes will still appear.
+// Top by likes (highest first)
 db.collection("memes")
   .orderBy("likes", "desc")
   .limit(18)
   .onSnapshot(snap => renderTop(snap.docs));
 
-// back-to-top button
+// Back-to-top visibility
 const backToTop = document.getElementById("backToTop");
 window.addEventListener("scroll", () => {
   if (window.scrollY > 160) backToTop.classList.add("show");
