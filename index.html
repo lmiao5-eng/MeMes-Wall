@@ -53,10 +53,18 @@ body {
   pointer-events: none;
 }
 
-/* NAV ------------------------------------------------------ */
-header { display:flex; justify-content:space-between; align-items:flex-start; }
-.tagline { margin-top: 3px; color:#666; font-size:14px; }
-
+/* NAV + HEADER --------------------------------------------- */
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:24px;
+}
+.tagline {
+  margin-top: 3px;
+  color:#666;
+  font-size:14px;
+}
 nav {
   display:flex;
   gap:2px;
@@ -74,7 +82,7 @@ nav a {
 nav a.current { background:#111; color:white; }
 nav a:hover:not(.current) { background:#e6e6e8; }
 
-/* BUTTON --------------------------------------------------- */
+/* DROP BUTTON ---------------------------------------------- */
 .drop-btn {
   margin-top: 22px;
   display:inline-flex;
@@ -87,6 +95,9 @@ nav a:hover:not(.current) { background:#e6e6e8; }
   font-size:15px;
   background:white;
   box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
+.drop-btn::before {
+  content: "⬆";
 }
 .drop-btn:hover {
   border-color:#111;
@@ -168,9 +179,29 @@ footer {
 }
 #backToTop.show { opacity:1; }
 
-/* Mobile */
-@media (max-width:650px) {
-  .container { padding:22px; }
+/* MOBILE --------------------------------------------------- */
+@media (max-width: 650px) {
+  .container {
+    margin: 16px auto 40px;
+    padding: 20px 18px 24px;
+  }
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  nav {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+  .drop-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 }
 </style>
 </head>
@@ -196,9 +227,9 @@ for (let i = 0; i < 18; i++) {
 
       <!-- Drop a Meme Button -->
       <div class="drop-btn" onclick="document.getElementById('fileInput').click()">
-        ⬆️ Drop A Meme
+        Drop A Meme
       </div>
-      <input id="fileInput" type="file" accept="image/*" style="display:none">
+      <input id="fileInput" type="file" accept="image/*" style="display:none" />
     </div>
 
     <!-- NAV -->
@@ -215,7 +246,6 @@ for (let i = 0; i < 18; i++) {
 </div>
 
 <button id="backToTop">↑ Back to Top</button>
-
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -239,9 +269,9 @@ function timeAgo(ts) {
   if (!ts) return "just now";
   const sec = (Date.now() - ts.toMillis()) / 1000;
   if (sec < 60) return "just now";
-  if (sec < 3600) return Math.floor(sec/60) + "m ago";
-  if (sec < 86400) return Math.floor(sec/3600) + "h ago";
-  return Math.floor(sec/86400) + "d ago";
+  if (sec < 3600) return Math.floor(sec / 60) + "m ago";
+  if (sec < 86400) return Math.floor(sec / 3600) + "h ago";
+  return Math.floor(sec / 86400) + "d ago";
 }
 
 // Display newest memes
@@ -271,7 +301,6 @@ db.collection("memes")
   .limit(30)
   .onSnapshot(s => render(s.docs));
 
-
 // Cloudinary Upload (unsigned preset)
 document.getElementById("fileInput").addEventListener("change", async (e) => {
   const file = e.target.files[0];
@@ -292,6 +321,9 @@ document.getElementById("fileInput").addEventListener("change", async (e) => {
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     likes: 0
   });
+
+  // reset input so user can upload same file again if they want
+  e.target.value = "";
 });
 
 // Back to top button
