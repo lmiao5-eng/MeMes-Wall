@@ -189,7 +189,7 @@ for (let i=0;i<18;i++){
   <header>
     <div>
       <h1>Top Memes</h1>
-      <div class="tagline">The 10 most loved memes in MeMes’ World.</div>
+      <div class="tagline">The 12 most loved memes in MeMes’ World.</div>
     </div>
 
     <nav>
@@ -235,7 +235,7 @@ function timeAgo(ts){
   return Math.floor(sec/86400)+"d ago";
 }
 
-// Render top 10
+// Render top 12
 const grid=document.getElementById("grid");
 function render(docs){
   grid.innerHTML="";
@@ -255,10 +255,10 @@ function render(docs){
   });
 }
 
-// Load top 10 by likes
+// Load top 12 by likes
 db.collection("memes")
   .orderBy("likes","desc")
-  .limit(10)
+  .limit(12)
   .onSnapshot(s=>render(s.docs));
 
 // Back to top
