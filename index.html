@@ -21,47 +21,27 @@
     .container {
       width: 100%;
       max-width: 1100px;
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.92);
       border-radius: 26px;
       padding: 28px 36px 34px;
       box-shadow:
         0 18px 60px rgba(15,23,42,0.18),
         0 0 0 1px rgba(255,255,255,0.8);
-      position: relative;
       backdrop-filter: blur(12px);
+      position: relative;
     }
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff8a8a, #ffd36a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.19);
+      margin-bottom: 28px;
     }
 
     h1 {
       margin: 0;
-      font-size: 26px;
-      font-weight: 600;
+      font-size: 28px;
+      font-weight: 700;
     }
 
     .tagline {
@@ -70,7 +50,7 @@
       margin-top: 2px;
     }
 
-    /* pill-nav */
+    /* nav pills */
     nav {
       display: inline-flex;
       padding: 4px;
@@ -79,24 +59,20 @@
       gap: 2px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06) inset;
     }
-
     nav a {
       font-size: 14px;
-      color: #555;
-      text-decoration: none;
       padding: 6px 16px;
       border-radius: 999px;
+      text-decoration: none;
+      color: #555;
       border: 1px solid transparent;
-      line-height: 1.2;
     }
-
     nav a.current {
       background: #111;
       border-color: #111;
       color: #fff;
       font-weight: 500;
     }
-
     nav a:hover:not(.current) {
       background: #e7e7ea;
     }
@@ -104,8 +80,7 @@
     .top-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       padding: 0 4px;
       font-size: 16px;
     }
@@ -113,19 +88,18 @@
     .explore-link {
       cursor: pointer;
       text-decoration: underline;
-      text-decoration-color: #d0d0d0;
       text-decoration-thickness: 1px;
+      text-decoration-color: #ccc;
       text-underline-offset: 3px;
     }
     .explore-link:hover {
       text-decoration-color: #999;
     }
 
-    /* Drop A Meme button */
     .dropzone {
       padding: 9px 22px;
-      border-radius: 999px;
       border: 1px dashed #b1b1b1;
+      border-radius: 999px;
       font-size: 14px;
       cursor: pointer;
       background: #ffffff;
@@ -137,7 +111,6 @@
     }
     .dropzone::before {
       content: "⬆︎";
-      font-size: 14px;
     }
     .dropzone:hover {
       background: #fef7f3;
@@ -155,7 +128,6 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 14px;
-      margin-bottom: 10px;
     }
 
     .tile {
@@ -166,10 +138,8 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(15,23,42,0.04);
-      transform: translateY(0);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.15s ease;
     }
-
     .tile img {
       position: absolute;
       inset: 0;
@@ -178,7 +148,6 @@
       object-fit: cover;
       transition: transform 0.25s ease;
     }
-
     .tile:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 26px rgba(15,23,42,0.18);
@@ -189,93 +158,72 @@
 
     .time-label {
       position: absolute;
-      left: 8px;
       top: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.62);
       padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.62);
-      color: #fff;
       font-size: 10px;
-      line-height: 1.2;
-      letter-spacing: .02em;
+      color: #fff;
     }
 
     .like-btn {
       position: absolute;
-      right: 8px;
       bottom: 8px;
-      border: none;
-      border-radius: 999px;
+      right: 8px;
       background: rgba(255,255,255,0.92);
+      border-radius: 999px;
       padding: 2px 8px;
       font-size: 11px;
-      display: flex;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       gap: 4px;
-      cursor: pointer;
       box-shadow: 0 4px 10px rgba(15,23,42,0.14);
-    }
-    .like-btn span.count {
-      min-width: 10px;
-      text-align: right;
     }
     .like-btn:hover {
       background: #ffe4ef;
     }
 
-    input[type=file] { display: none; }
-
     .note {
+      text-align: right;
+      margin-top: 14px;
       font-size: 12px;
       color: #888;
-      text-align: right;
-      margin-top: 4px;
     }
 
-    /* Back to Top button */
     #backToTop {
       position: fixed;
       left: 24px;
       bottom: 24px;
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.85);
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid #ddd;
-      font-size: 13px;
       cursor: pointer;
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(6px);
       transition: opacity .25s ease, transform .25s ease;
+      font-size: 13px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      z-index: 10;
     }
     #backToTop.show {
       opacity: 1;
       transform: translateY(0);
     }
-
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: repeat(3,1fr); }
-      body { padding: 24px; }
-      .container { padding: 24px 20px 26px; }
-    }
-    @media (max-width: 550px) {
-      .grid { grid-template-columns: repeat(2,1fr); }
-      header { flex-direction: column; gap: 8px; align-items: flex-start;}
-      .note { text-align: left; }
-    }
+    
+    input[type=file] { display: none; }
   </style>
 </head>
 
 <body>
   <div class="container">
+
     <header>
-      <div class="brand">
-        <div class="logo-dot">M</div>
-        <div>
-          <h1>Welcome to the MeMes’ World</h1>
-          <div class="tagline">Drop your memes into the commons, no take-backs.</div>
-        </div>
+      <div>
+        <h1>Welcome to the MeMes’ World</h1>
+        <div class="tagline">Drop your memes into the commons, no need to log in.</div>
       </div>
 
       <nav>
@@ -290,24 +238,21 @@
     </div>
 
     <div id="grid" class="grid"></div>
-    <div class="note">Once you drop a meme, you can’t delete it.</div>
-
     <input id="fileInput" type="file" accept="image/*" />
+
+    <div class="note">Once you drop a meme, you can’t delete it.</div>
   </div>
 
-  <!-- Back to top button -->
-  <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-    ↑ Back to Top
-  </button>
+  <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑ Back to Top</button>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // 🔥 Firebase config (yours)
+    // ---- FIREBASE CONFIG ----
     const firebaseConfig = {
-      apiKey: "AIzaSyC4SFPaa3c9tDnPC5zVxaFHaaijBIG2Xk",
+      apiKey: "AIzaSyC4SFP...REPLACE",
       authDomain: "memes-world-6276b.firebaseapp.com",
       projectId: "memes-world-6276b",
       storageBucket: "memes-world-6276b.appspot.com",
@@ -315,35 +260,17 @@
       appId: "1:332915204004:web:09074db940dfc1755ceb31",
       measurementId: "G-CWJX78W20M"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ☁️ Cloudinary
+    // ---- CLOUDINARY CONFIG ----
     const cloudName = "dnwhmng9l";
     const uploadPreset = "unsigned_meme_upload";
 
     const grid = document.getElementById("grid");
     const dropzone = document.getElementById("dropzone");
     const fileInput = document.getElementById("fileInput");
-    const backToTop = document.getElementById("backToTop");
 
-    // Time-ago helper
-    function timeAgo(date) {
-      if (!date) return "just now";
-      const now = new Date();
-      const diffSec = Math.floor((now - date) / 1000);
-      if (diffSec < 60) return "just now";
-      const diffMin = Math.floor(diffSec / 60);
-      if (diffMin < 60) return diffMin + "m ago";
-      const diffHour = Math.floor(diffMin / 60);
-      if (diffHour < 24) return diffHour + "h ago";
-      const diffDay = Math.floor(diffHour / 24);
-      if (diffDay < 7) return diffDay + "d ago";
-      return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-    }
-
-    // Upload to Cloudinary
     async function uploadToCloudinary(file) {
       const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
       const formData = new FormData();
@@ -353,6 +280,16 @@
       const res = await fetch(url, { method: "POST", body: formData });
       const data = await res.json();
       return data.secure_url;
+    }
+
+    // Time ago formatter
+    function timeAgo(ts) {
+      if (!ts) return "";
+      const sec = (Date.now() - ts.toMillis()) / 1000;
+      if (sec < 60) return "just now";
+      if (sec < 3600) return Math.floor(sec/60)+"m ago";
+      if (sec < 86400) return Math.floor(sec/3600)+"h ago";
+      return Math.floor(sec/86400)+"d ago";
     }
 
     async function handleFiles(files) {
@@ -366,95 +303,72 @@
 
         await db.collection("memes").add({
           url: imageUrl,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          score: 0
+          likes: 0,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         dropzone.textContent = "Drop A Meme";
-      } catch (err) {
-        console.error(err);
-        dropzone.textContent = "Upload Failed";
-        setTimeout(() => dropzone.textContent = "Drop A Meme", 1500);
+      } catch (e) {
+        dropzone.textContent = "Failed";
+        setTimeout(()=>dropzone.textContent="Drop A Meme",1500);
       }
-    }
-
-    function makeTile(doc) {
-      const data = doc.data();
-      const score = data.score || 0;
-      const createdAt = data.createdAt && data.createdAt.toDate
-        ? data.createdAt.toDate()
-        : null;
-      const label = timeAgo(createdAt);
-
-      const tile = document.createElement("div");
-      tile.className = "tile";
-      tile.innerHTML = `
-        <span class="time-label">${label}</span>
-        <img src="${data.url}" alt="meme" />
-        <button class="like-btn" data-id="${doc.id}">
-          <span>🔥</span>
-          <span class="count">${score}</span>
-        </button>
-      `;
-      return tile;
     }
 
     function renderTiles(docs) {
       grid.innerHTML = "";
-      docs.forEach(doc => grid.appendChild(makeTile(doc)));
+      docs.forEach(doc => {
+        const d = doc.data();
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.innerHTML = `
+          <img src="${d.url}" />
+          <div class="time-label">${timeAgo(d.createdAt)}</div>
+          <button class="like-btn">❤️ <span class="count">${d.likes||0}</span></button>
+        `;
+
+        // Like button
+        tile.querySelector(".like-btn").onclick = () => {
+          db.collection("memes").doc(doc.id).update({
+            likes: (d.likes||0) + 1
+          });
+        };
+
+        grid.appendChild(tile);
+      });
+
+      // fill empty grid cells up to 18
       const remain = 18 - docs.length;
       for (let i = 0; i < remain; i++) {
-        const t = document.createElement("div");
-        t.className = "tile";
-        grid.appendChild(t);
+        const placeholder = document.createElement("div");
+        placeholder.className = "tile";
+        grid.appendChild(placeholder);
       }
     }
 
-    // Newest first
+    // Live Firestore listener
     db.collection("memes")
-      .orderBy("createdAt", "desc")
+      .orderBy("createdAt","desc")
       .limit(18)
       .onSnapshot(snap => renderTiles(snap.docs));
 
-    // Like button
-    grid.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".like-btn");
-      if (!btn) return;
-      const id = btn.getAttribute("data-id");
-      const countSpan = btn.querySelector(".count");
-
-      try {
-        await db.collection("memes").doc(id).update({
-          score: firebase.firestore.FieldValue.increment(1)
-        });
-        countSpan.textContent = Number(countSpan.textContent) + 1;
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    // Dropzone events
     dropzone.onclick = () => fileInput.click();
     fileInput.onchange = e => handleFiles(e.target.files);
 
-    dropzone.ondragover = (e) => {
-      e.preventDefault();
-      dropzone.classList.add("dragover");
+    dropzone.ondragover = e => {
+      e.preventDefault(); dropzone.classList.add("dragover");
     };
     dropzone.ondragleave = () => dropzone.classList.remove("dragover");
-    dropzone.ondrop = (e) => {
+    dropzone.ondrop = e => {
       e.preventDefault();
       dropzone.classList.remove("dragover");
       handleFiles(e.dataTransfer.files);
     };
 
-    // Back to top visibility
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 200) {
-        backToTop.classList.add("show");
-      } else {
-        backToTop.classList.remove("show");
-      }
+    // Back to top logic
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll",()=>{
+      if (window.scrollY>140) backToTop.classList.add("show");
+      else backToTop.classList.remove("show");
     });
   </script>
 </body>
