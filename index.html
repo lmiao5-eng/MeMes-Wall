@@ -1,124 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeMes' World - Drop A Meme</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>MeMes' World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: #f3f3f3;
+      color: #111;
+    }
+    .shell {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 1100px;
+      border-radius: 16px;
+      padding: 48px 56px 40px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+    }
+    h1 {
+      margin: 0 0 40px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 32px;
+    }
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      font-size: 18px;
+    }
+    .label {
+      font-weight: 500;
+    }
+    .dropzone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px dashed #bbbbbb;
+      font-size: 14px;
+      color: #555;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      gap: 8px;
+    }
+    .dropzone:hover {
+      background: #fafafa;
+      border-color: #999;
+    }
+    .dropzone.dragover {
+      background: #f0f7ff;
+      border-color: #3178ff;
+      color: #3178ff;
+    }
+    .dropzone span.icon {
+      font-size: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .tile {
+      position: relative;
+      width: 100%;
+      padding-top: 100%; /* 1:1 square */
+      background: #e2e2e2;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .tile img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .tile-empty::after {
+      content: "✦";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c0c0c0;
+      font-size: 20px;
+    }
+    .hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #777;
+      text-align: right;
+    }
+    @media (max-width: 900px) {
+      .card {
+        padding: 32px 24px 28px;
+      }
+      h1 {
+        font-size: 26px;
+        margin-bottom: 28px;
+      }
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 500px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .hint {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header Section -->
-        <header class="header">
-            <h1 class="title">
-                <i class="fas fa-laugh-beam"></i>
-                Welcome to the MeMes' World
-            </h1>
-            <p class="subtitle">Share your funniest memes with the world!</p>
-        </header>
+  <div class="shell">
+    <div class="card">
+      <h1>Welcome to the MeMes’ World</h1>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Meme Submission Form -->
-            <section class="submission-section">
-                <div class="form-container">
-                    <h2><i class="fas fa-upload"></i> Drop A Meme</h2>
-                    <form id="memeForm" class="meme-form">
-                        <div class="form-group">
-                            <label for="memeTitle">Meme Title</label>
-                            <input type="text" id="memeTitle" placeholder="Enter a funny title..." required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="memeImage">Image URL</label>
-                            <input type="url" id="memeImage" placeholder="https://example.com/your-meme.jpg" required>
-                            <small class="hint">Paste direct image link (JPG, PNG, GIF)</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="memeAuthor">Your Name (Optional)</label>
-                            <input type="text" id="memeAuthor" placeholder="Anonymous Memer">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="memeCategory">Category</label>
-                            <select id="memeCategory">
-                                <option value="funny">Funny</option>
-                                <option value="dank">Dank</option>
-                                <option value="wholesome">Wholesome</option>
-                                <option value="relatable">Relatable</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-paper-plane"></i> Submit Meme
-                        </button>
-                        
-                        <div class="disclaimer">
-                            <i class="fas fa-exclamation-circle"></i>
-                            Once submitted, memes cannot be deleted. Keep it clean!
-                        </div>
-                    </form>
-                </div>
-            </section>
+      <div class="top-row">
+        <div class="label">Explore More</div>
 
-            <!-- Explore Memes Section -->
-            <section class="gallery-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-compass"></i> Explore Memes</h2>
-                    <div class="controls">
-                        <button id="refreshBtn" class="refresh-btn">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                        <select id="filterCategory" class="filter-select">
-                            <option value="all">All Categories</option>
-                            <option value="funny">Funny</option>
-                            <option value="dank">Dank</option>
-                            <option value="wholesome">Wholesome</option>
-                            <option value="relatable">Relatable</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div id="memeGrid" class="meme-grid">
-                    <!-- Memes will be loaded here -->
-                    <div class="loading">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        Loading memes...
-                    </div>
-                </div>
-                
-                <div class="empty-state" id="emptyState" style="display: none;">
-                    <i class="fas fa-images"></i>
-                    <h3>No memes yet</h3>
-                    <p>Be the first to drop a meme!</p>
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>MeMes' World &copy; 2025 | Memes are permanent once submitted</p>
-            <p class="github-link">
-                <i class="fab fa-github"></i>
-                <a href="https://github.com/yourusername/meme-drop-site" target="_blank">View on GitHub</a>
-            </p>
-        </footer>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
-        <div class="modal-content">
-            <i class="fas fa-check-circle success-icon"></i>
-            <h2>Meme Submitted!</h2>
-            <p>Your meme has been added to the collection. It cannot be deleted.</p>
-            <button class="modal-btn" onclick="closeModal()">Awesome!</button>
+        <div>
+          <div id="dropzone" class="dropzone">
+            <span class="icon">⬆︎</span>
+            <span>Drop a Meme or Click to Upload</span>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <script src="script.js"></script>
+      <div id="grid" class="grid">
+        <!-- Meme tiles will be filled by JS -->
+      </div>
+
+      <div class="hint">No login needed. Latest memes appear here for everyone.</div>
+
+      <!-- Hidden file input -->
+      <input type="file" id="fileInput" accept="image/*" style="display:none" />
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (compat version for simplicity) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+  <script>
+    // TODO: paste your own config here from Firebase console
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // --- Firebase init ---
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    const gridEl = document.getElementById("grid");
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("fileInput");
+
+    // --- UI helpers ---
+    function renderEmptyPlaceholders(count) {
+      gridEl.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        const tile = document.createElement("div");
+        tile.className = "tile tile-empty";
+        gridEl.appendChild(tile);
+      }
+    }
+
+    function renderMemes(docs) {
+      gridEl.innerHTML = "";
+      docs.forEach(doc => {
+        const data = doc.data();
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        const img = document.createElement("img");
+        img.src = data.url;
+        img.alt = "meme";
+        tile.appendChild(img);
+        gridEl.appendChild(tile);
+      });
+
+      // if less than 18, pad with empty tiles to match the mockup
+      const maxTiles = 18;
+      const remaining = Math.max(0, maxTiles - docs.length);
+      for (let i = 0; i < remaining; i++) {
+        const t = document.createElement("div");
+        t.className = "tile tile-empty";
+        gridEl.appendChild(t);
+      }
+    }
+
+    // --- Load memes when the page opens (live updates) ---
+    renderEmptyPlaceholders(18);
+
+    db.collection("memes")
+      .orderBy("createdAt", "desc")
+      .limit(18)
+      .onSnapshot(snapshot => {
+        const docs = snapshot.docs;
+        if (docs.length === 0) {
+          renderEmptyPlaceholders(18);
+        } else {
+          renderMemes(docs);
+        }
+      });
+
+    // --- Upload flow ---
+    function handleFiles(files) {
+      const file = files[0];
+      if (!file || !file.type.startsWith("image/")) return;
+
+      // create a simple unique name
+      const fileName = Date.now() + "-" + file.name.replace(/\s+/g, "_");
+      const storageRef = storage.ref().child("memes/" + fileName);
+
+      dropzone.classList.add("dragover");
+      dropzone.querySelector("span:last-child").textContent = "Uploading…";
+
+      storageRef.put(file)
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+          return db.collection("memes").add({
+            url,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          dropzone.classList.remove("dragover");
+          dropzone.querySelector("span:last-child").textContent = "Drop a Meme or Click to Upload";
+        })
+        .catch(err => {
+          console.error(err);
+          dropzone.classList.remove("dragover");
+          dropzone.querySelector("span:last-child").textContent = "Upload failed. Try again?";
+          setTimeout(() => {
+            dropzone.querySelector("span:last-child").textContent = "Drop a Meme or Click to Upload";
+          }, 2000);
+        });
+    }
+
+    // Click to open file picker
+    dropzone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", e => handleFiles(e.target.files));
+
+    // Drag & drop events
+    dropzone.addEventListener("dragover", e => {
+      e.preventDefault();
+      dropzone.classList.add("dragover");
+    });
+    dropzone.addEventListener("dragleave", e => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+    });
+    dropzone.addEventListener("drop", e => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFiles(e.dataTransfer.files);
+        e.dataTransfer.clearData();
+      }
+    });
+  </script>
 </body>
 </html>
