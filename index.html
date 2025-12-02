@@ -96,9 +96,6 @@ nav a:hover:not(.current) { background:#e6e6e8; }
   background:white;
   box-shadow:0 6px 16px rgba(0,0,0,0.08);
 }
-.drop-btn::before {
-  content: "⬆";
-}
 .drop-btn:hover {
   border-color:#111;
   transform:translateY(-2px);
@@ -163,6 +160,30 @@ footer {
   font-size:12px;
 }
 
+/* CREDITS SECTION ------------------------------------------ */
+.credits {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: 13px;
+  color: #555;
+}
+.credits-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 6px;
+}
+.credits-line {
+  margin: 2px 0;
+}
+.credits strong {
+  font-weight: 600;
+  color: #222;
+}
+
 /* BACK TO TOP ---------------------------------------------- */
 #backToTop {
   position:fixed;
@@ -225,14 +246,12 @@ for (let i = 0; i < 18; i++) {
       <h1>Welcome to the MeMes’ World</h1>
       <div class="tagline">Drop your memes into the commons, no need to log in.</div>
 
-      <!-- Drop a Meme Button -->
       <div class="drop-btn" onclick="document.getElementById('fileInput').click()">
         Drop A Meme
       </div>
       <input id="fileInput" type="file" accept="image/*" style="display:none" />
     </div>
 
-    <!-- NAV -->
     <nav>
       <a href="index.html" class="current">Newest</a>
       <a href="top.html">Top Memes</a>
@@ -243,6 +262,15 @@ for (let i = 0; i < 18; i++) {
   <div id="grid" class="grid"></div>
 
   <footer>Once you drop a meme, you can’t delete it.</footer>
+
+  <!-- PORTFOLIO-READY CREDITS SECTION -->
+  <section class="credits">
+    <p class="credits-title">Credits</p>
+    <p class="credits-line"><strong>Designed and built by</strong> Linting Miao</p>
+    <p class="credits-line"><strong>Cloud infrastructure via</strong> Cloudinary, Firebase, and GitHub Pages</p>
+    <p class="credits-line"><strong>AI-powered development support from</strong> ChatGPT</p>
+  </section>
+
 </div>
 
 <button id="backToTop">↑ Back to Top</button>
@@ -301,7 +329,7 @@ db.collection("memes")
   .limit(30)
   .onSnapshot(s => render(s.docs));
 
-// Cloudinary Upload (unsigned preset)
+// Cloudinary Upload (unsigned)
 document.getElementById("fileInput").addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -322,11 +350,10 @@ document.getElementById("fileInput").addEventListener("change", async (e) => {
     likes: 0
   });
 
-  // reset input so user can upload same file again if they want
   e.target.value = "";
 });
 
-// Back to top button
+// Back to top
 window.addEventListener("scroll", () => {
   const btn = document.getElementById("backToTop");
   if (window.scrollY > 200) btn.classList.add("show");
