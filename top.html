@@ -1,410 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Top Memes – MeMes' World</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeMes’ World – Top Memes</title>
 
-  <style>
-    * { box-sizing: border-box; }
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      color: #111;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 40px 16px;
-      background: radial-gradient(circle at top left, #f7f3ff 0%, #f3fbff 40%, #fdf7f3 100%);
-      position: relative;
-      overflow-x: hidden;
-    }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  color: #111;
+  background: linear-gradient(135deg, #f7eaff, #eafffd, #fff5e9);
+  background-size: 300% 300%;
+  animation: bgShift 12s ease infinite;
+  overflow-x: hidden;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: -30%;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,182,193,0.5), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(173,216,230,0.55), transparent 55%),
-        radial-gradient(circle at 0% 100%, rgba(255,228,196,0.55), transparent 55%);
-      filter: blur(32px);
-      opacity: 0.75;
-      animation: bgShift 24s ease-in-out infinite alternate;
-      z-index: -2;
-    }
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    @keyframes bgShift {
-      0%   { transform: translate3d(-20px, 0, 0) scale(1); }
-      50%  { transform: translate3d(10px, 10px, 0) scale(1.05); }
-      100% { transform: translate3d(0, -20px, 0) scale(1.02); }
-    }
+/* floating particles */
+.particle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  pointer-events: none;
+  filter: blur(3px);
+  animation: floatUp 12s linear infinite;
+}
+@keyframes floatUp {
+  from { transform: translateY(40vh) scale(1); opacity: 1; }
+  to   { transform: translateY(-60vh) scale(0.6); opacity: 0; }
+}
 
-    #particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      overflow: hidden;
-    }
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 0 10px rgba(255,255,255,0.9);
-      opacity: 0.45;
-      animation: floatUp linear infinite;
-    }
-    @keyframes floatUp {
-      0%   { transform: translate3d(0, 0, 0); opacity: 0; }
-      10%  { opacity: .45; }
-      90%  { opacity: .45; }
-      100% { transform: translate3d(0, -140vh, 0); opacity: 0; }
-    }
+/* main card */
+.container {
+  max-width: 1150px;
+  margin: 40px auto 70px;
+  padding: 32px 38px 36px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 26px;
+  box-shadow:
+    0 18px 60px rgba(15,23,42,0.18),
+    0 0 0 1px rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.6s ease forwards;
+  transform: translateY(10px);
+  opacity: 0;
+}
+@keyframes fadeIn {
+  to { transform: translateY(0); opacity: 1; }
+}
 
-    .container {
-      width: 100%;
-      max-width: 1100px;
-      background: rgba(255,255,255,0.96);
-      border-radius: 26px;
-      padding: 26px 32px 30px;
-      box-shadow:
-        0 20px 60px rgba(15,23,42,0.18),
-        0 0 0 1px rgba(255,255,255,0.9);
-      backdrop-filter: blur(16px);
-      position: relative;
-    }
+/* header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
 
-    .fade-in {
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+.tagline {
+  margin-top: 2px;
+  font-size: 13px;
+  color: #666;
+}
 
-    .header-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255,255,255,0.9);
-      border-radius: 999px;
-      padding: 12px 18px 12px 20px;
-      box-shadow: 0 8px 24px rgba(15,23,42,0.08);
-      margin-bottom: 22px;
-    }
+nav {
+  display: flex;
+  background: #f3f3f5;
+  padding: 4px;
+  border-radius: 999px;
+  gap: 2px;
+}
+nav a {
+  font-size: 14px;
+  padding: 7px 16px;
+  text-decoration: none;
+  color: #444;
+  border-radius: 999px;
+}
+nav a.current {
+  background: #111;
+  color: #fff;
+}
+nav a:hover:not(.current) {
+  background: #e2e2e5;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 700;
-    }
-    .tagline {
-      margin-top: 2px;
-      font-size: 13px;
-      color: #777;
-    }
+/* back link */
+.back-link {
+  margin-bottom: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-    nav {
-      display: inline-flex;
-      padding: 3px;
-      border-radius: 999px;
-      background: #f3f3f5;
-      gap: 2px;
-    }
-    nav a {
-      font-size: 13px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      text-decoration: none;
-      color: #555;
-      border: 1px solid transparent;
-      white-space: nowrap;
-    }
-    nav a.current {
-      background: #111;
-      color: #fff;
-      border-color: #111;
-      font-weight: 500;
-    }
-    nav a:hover:not(.current) {
-      background: #e7e7ea;
-    }
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
 
-    .top-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding: 0 4px;
-      font-size: 15px;
-    }
-    .explore-link {
-      cursor: pointer;
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-decoration-color: #ccc;
-      text-underline-offset: 3px;
-    }
-    .explore-link:hover {
-      text-decoration-color: #888;
-    }
+.tile {
+  width: 100%;
+  padding-top: 100%;
+  background: #ddd;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  transition: transform .2s cubic-bezier(.25,.8,.25,1), box-shadow .2s;
+}
+.tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .25s ease;
+}
+.tile:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(255,144,212,0.25);
+}
+.tile:hover img {
+  transform: scale(1.05);
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 14px;
-    }
+.time-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+}
 
-    .tile {
-      width: 100%;
-      padding-top: 100%;
-      background: #e3e3e6;
-      border-radius: 16px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 3px 10px rgba(15,23,42,0.05);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-    .tile img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.25s ease;
-    }
-    .tile:hover {
-      transform: translateY(-4px);
-      box-shadow:
-        0 0 25px rgba(255,255,255,0.9),
-        0 8px 26px rgba(15,23,42,0.22);
-    }
-    .tile:hover img {
-      transform: scale(1.03);
-    }
+.like-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 999px;
+  border: none;
+  padding: 3px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  cursor: pointer;
+}
 
-    .time-label {
-      position: absolute;
-      top: 7px;
-      left: 7px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      font-size: 10px;
-    }
+/* footer + back to top */
+footer {
+  margin-top: 18px;
+  text-align: right;
+  font-size: 12px;
+  color: #777;
+}
 
-    .like-btn {
-      position: absolute;
-      bottom: 7px;
-      right: 7px;
-      background: rgba(255,255,255,0.92);
-      border-radius: 999px;
-      padding: 2px 8px;
-      font-size: 11px;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      box-shadow: 0 4px 12px rgba(15,23,42,0.16);
-    }
-    .like-btn:hover {
-      background: #ffe4ef;
-    }
+#backToTop {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  background: rgba(255,255,255,0.8);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: 0.25s ease;
+}
+#backToTop.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    .note {
-      text-align: right;
-      margin-top: 14px;
-      font-size: 12px;
-      color: #888;
-    }
-    footer {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #aaa;
-      text-align: right;
-    }
-
-    #backToTop {
-      position: fixed;
-      left: 20px;
-      bottom: 20px;
-      background: rgba(255,255,255,0.9);
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid #ddd;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity .25s ease, transform .25s ease;
-      font-size: 13px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      z-index: 10;
-    }
-    #backToTop.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* mobile */
-    @media (max-width: 900px) {
-      .container {
-        padding: 20px 18px 24px;
-        border-radius: 22px;
-      }
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .header-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .top-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .note, footer { text-align: left; }
-      #backToTop { left: 16px; bottom: 16px; }
-    }
-  </style>
+/* mobile */
+@media (max-width: 650px) {
+  .container { padding: 24px; }
+  nav a { padding: 6px 12px; }
+}
+</style>
 </head>
 
 <body>
-  <div id="particles"></div>
 
-  <div class="container fade-in">
-    <div class="header-bar fade-in">
-      <div>
-        <h1>Top Memes</h1>
-        <div class="tagline">Drop your memes into the commons, no need to log in.</div>
-      </div>
-      <nav>
-        <a href="index.html">Newest</a>
-        <a href="top.html" class="current">Top Memes</a>
-      </nav>
+<!-- floating particles -->
+<script>
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement("div");
+  p.className = "particle";
+  p.style.left = Math.random()*100 + "vw";
+  p.style.animationDelay = Math.random()*-12 + "s";
+  p.style.opacity = Math.random()*0.7;
+  document.body.appendChild(p);
+}
+</script>
+
+<div class="container">
+  <header>
+    <div>
+      <h1>Top Memes</h1>
+      <div class="tagline">Drop your memes into the commons, no need to log in.</div>
     </div>
+    <nav>
+      <a href="index.html">Newest</a>
+      <a href="top.html" class="current">Top Memes</a>
+    </nav>
+  </header>
 
-    <div class="top-row fade-in">
-      <div class="explore-link" onclick="location.href='index.html'">← Back to Newest</div>
-    </div>
+  <div class="back-link" onclick="location.href='index.html'">← Back to Newest</div>
 
-    <div id="grid" class="grid fade-in"></div>
+  <div id="grid" class="grid"></div>
 
-    <div class="note fade-in">Once you drop a meme, you can’t delete it.</div>
-    <footer class="fade-in">MeMes’ World · Top drops from strangers everywhere.</footer>
-  </div>
+  <footer>
+    Once you drop a meme, you can’t delete it. <br>
+    MeMes’ World · Top drops from strangers everywhere.
+  </footer>
+</div>
 
-  <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑ Back to Top</button>
+<button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+  ↑ Back to Top
+</button>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY_HERE",
-      authDomain: "memes-world-6276b.firebaseapp.com",
-      projectId: "memes-world-6276b",
-      storageBucket: "memes-world-6276b.appspot.com",
-      messagingSenderId: "332915204004",
-      appId: "1:332915204004:web:09074db940dfc1755ceb31",
-      measurementId: "G-CWJX78W20M"
+<script>
+// ---- SAME FIREBASE CONFIG AS index.html ----
+const firebaseConfig = {
+  apiKey: "AIzaSyCX45PRa3xc9tDnPC5zVxaFHaaijB1g2Xk",
+  authDomain: "memes--world-6276b.firebaseapp.com",
+  projectId: "memes--world-6276b",
+  storageBucket: "memes--world-6276b.appspot.com",
+  messagingSenderId: "332915204004",
+  appId: "1:332915204004:web:09074db940dfc1755ceb31",
+  measurementId: "G-CWJX78W20M"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+function timeAgo(ts) {
+  if (!ts) return "just now";
+  const sec = (Date.now() - ts.toMillis())/1000;
+  if (sec < 60) return "just now";
+  if (sec < 3600) return Math.floor(sec/60)+"m ago";
+  if (sec < 86400) return Math.floor(sec/3600)+"h ago";
+  return Math.floor(sec/86400)+"d ago";
+}
+
+const grid = document.getElementById("grid");
+
+function renderTop(docs) {
+  grid.innerHTML = "";
+  docs.forEach(doc => {
+    const d = doc.data();
+    const tile = document.createElement("div");
+    tile.className = "tile";
+
+    tile.innerHTML = `
+      <img src="${d.url}">
+      <div class="time-label">${timeAgo(d.createdAt)}</div>
+      <button class="like-btn">❤️ <span class="count">${d.likes || 0}</span></button>
+    `;
+
+    tile.querySelector(".like-btn").onclick = () => {
+      db.collection("memes").doc(doc.id).update({
+        likes: (d.likes||0) + 1
+      });
     };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
 
-    // particles
-    (function createParticles() {
-      const container = document.getElementById("particles");
-      const COUNT = 16;
-      for (let i = 0; i < COUNT; i++) {
-        const p = document.createElement("div");
-        p.className = "particle";
-        const size = 3 + Math.random() * 4;
-        const left = Math.random() * 100;
-        const delay = Math.random() * -20;
-        const dur = 18 + Math.random() * 14;
-        p.style.width = p.style.height = size + "px";
-        p.style.left = left + "vw";
-        p.style.bottom = (-20 - Math.random() * 40) + "vh";
-        p.style.animationDuration = dur + "s";
-        p.style.animationDelay = delay + "s";
-        container.appendChild(p);
-      }
-    })();
+    grid.appendChild(tile);
+  });
 
-    function timeAgo(ts) {
-      if (!ts) return "";
-      const sec = (Date.now() - ts.toMillis()) / 1000;
-      if (sec < 60) return "just now";
-      if (sec < 3600) return Math.floor(sec/60)+"m ago";
-      if (sec < 86400) return Math.floor(sec/3600)+"h ago";
-      return Math.floor(sec/86400)+"d ago";
+  // if no memes yet, show placeholders (optional)
+  if (docs.length === 0) {
+    for (let i = 0; i < 18; i++) {
+      const placeholder = document.createElement("div");
+      placeholder.className = "tile";
+      grid.appendChild(placeholder);
     }
+  }
+}
 
-    const grid = document.getElementById("grid");
+// order by likes (descending). newly uploaded memes with 0 likes will still appear.
+db.collection("memes")
+  .orderBy("likes", "desc")
+  .limit(18)
+  .onSnapshot(snap => renderTop(snap.docs));
 
-    function renderTiles(docs) {
-      grid.innerHTML = "";
-      docs.forEach(doc => {
-        const data = doc.data();
-        const tile = document.createElement("div");
-        tile.className = "tile fade-in";
-        tile.innerHTML = `
-          <img src="${data.url}" alt="meme" />
-          <div class="time-label">${timeAgo(data.createdAt)}</div>
-          <button class="like-btn">❤️ <span class="count">${data.likes || 0}</span></button>
-        `;
-        tile.querySelector(".like-btn").onclick = async () => {
-          try {
-            await db.collection("memes").doc(doc.id).update({
-              likes: (data.likes || 0) + 1
-            });
-          } catch (e) { console.error(e); }
-        };
-        grid.appendChild(tile);
-      });
+// back-to-top button
+const backToTop = document.getElementById("backToTop");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 160) backToTop.classList.add("show");
+  else backToTop.classList.remove("show");
+});
+</script>
 
-      const remain = 18 - docs.length;
-      for (let i = 0; i < remain; i++) {
-        const placeholder = document.createElement("div");
-        placeholder.className = "tile fade-in";
-        grid.appendChild(placeholder);
-      }
-
-      triggerFadeIns();
-    }
-
-    db.collection("memes")
-      .orderBy("likes","desc")
-      .limit(18)
-      .onSnapshot(snap => renderTiles(snap.docs));
-
-    const backToTop = document.getElementById("backToTop");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 140) backToTop.classList.add("show");
-      else backToTop.classList.remove("show");
-    });
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
-      });
-    }, { threshold: 0.08 });
-
-    function triggerFadeIns() {
-      document.querySelectorAll(".fade-in").forEach(el => observer.observe(el));
-    }
-    triggerFadeIns();
-  </script>
 </body>
 </html>
