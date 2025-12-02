@@ -9,7 +9,7 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
       background: #f6f6f6;
       display: flex;
       justify-content: center;
@@ -18,10 +18,11 @@
     .container {
       width: 100%;
       max-width: 1100px;
-      background: white;
-      border-radius: 20px;
+      background: #ffffff;
+      border-radius: 24px;
       padding: 32px 40px 36px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+      position: relative;
     }
     header {
       display: flex;
@@ -31,32 +32,43 @@
     }
     h1 {
       margin: 0;
-      font-size: 26px;
-      font-weight: 500;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    nav {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: #f4f4f4;
+      gap: 2px;
     }
     nav a {
       font-size: 14px;
-      color: #666;
+      color: #555;
       text-decoration: none;
-      margin-left: 16px;
-      padding: 6px 12px;
+      padding: 6px 16px;
       border-radius: 999px;
       border: 1px solid transparent;
-    }
-    nav a:hover {
-      border-color: #ddd;
-      background:#fafafa;
+      line-height: 1.2;
     }
     nav a.current {
+      background: #ffffff;
       border-color: #111;
-      color:#111;
+      color: #111;
+      font-weight: 500;
     }
+    nav a:hover:not(.current) {
+      background: #eaeaea;
+    }
+
     .subtitle {
       font-size: 14px;
       color: #777;
       margin-bottom: 14px;
       padding: 0 4px;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -66,8 +78,8 @@
     .tile {
       width: 100%;
       padding-top: 100%;
-      background: #ddd;
-      border-radius: 6px;
+      background: #dedede;
+      border-radius: 10px;
       position: relative;
       overflow: hidden;
     }
@@ -78,6 +90,7 @@
       height: 100%;
       object-fit: cover;
     }
+
     .time-label {
       position: absolute;
       left: 6px;
@@ -89,6 +102,7 @@
       font-size: 10px;
       line-height: 1.2;
     }
+
     .like-btn {
       position: absolute;
       right: 6px;
@@ -118,8 +132,30 @@
       margin-top: 4px;
     }
 
+    #backToTop {
+      position: fixed;
+      left: 24px;
+      bottom: 24px;
+      background: rgba(255,255,255,0.9);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      font-size: 13px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .25s ease, transform .25s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+    #backToTop.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 900px) {
       .grid { grid-template-columns: repeat(3,1fr); }
+      body { padding: 24px; }
       .container { padding: 24px 20px 26px; }
     }
     @media (max-width: 550px) {
@@ -146,14 +182,18 @@
     <div class="note">Once you drop a meme, you can’t delete it.</div>
   </div>
 
+  <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    ↑ Back to Top
+  </button>
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Same Firebase config as index.html
+    // Same Firebase config
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
+      apiKey: "AIzaSyC4SFPaa3c9tDnPC5zVxaFHaaijBIG2Xk",
       authDomain: "memes-world-6276b.firebaseapp.com",
       projectId: "memes-world-6276b",
       storageBucket: "memes-world-6276b.appspot.com",
@@ -167,6 +207,7 @@
     }
     const db = firebase.firestore();
     const grid = document.getElementById("grid");
+    const backToTop = document.getElementById("backToTop");
 
     function timeAgo(date) {
       if (!date) return "just now";
@@ -214,7 +255,7 @@
       .limit(30)
       .onSnapshot(snap => renderTiles(snap.docs));
 
-    // Likes from here too
+    // Like from here too
     grid.addEventListener("click", async (e) => {
       const btn = e.target.closest(".like-btn");
       if (!btn) return;
@@ -228,6 +269,15 @@
         countSpan.textContent = Number(countSpan.textContent) + 1;
       } catch (err) {
         console.error(err);
+      }
+    });
+
+    // Back to top visibility
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 200) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
       }
     });
   </script>
