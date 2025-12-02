@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Top Memes – MeMes' World</title>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif;
+      background: #f6f6f6;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: white;
+      border-radius: 20px;
+      padding: 32px 40px 50px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 500;
+    }
+    nav a {
+      font-size: 14px;
+      color: #666;
+      text-decoration: none;
+      margin-left: 16px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      border-color: #ddd;
+      background:#fafafa;
+    }
+    nav a.current {
+      border-color: #111;
+      color:#111;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 14px;
+      padding: 0 4px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+    .tile {
+      width: 100%;
+      padding-top: 100%;
+      background: #ddd;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tile img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .like-btn {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.88);
+      padding: 2px 8px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .like-btn span.count {
+      min-width: 10px;
+      text-align: right;
+    }
+    .like-btn:hover {
+      background: #ffecec;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(3,1fr); }
+      .container { padding: 24px 20px 32px; }
+    }
+    @media (max-width: 550px) {
+      .grid { grid-template-columns: repeat(2,1fr); }
+      header { flex-direction: column; gap: 8px; align-items: flex-start;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Top Memes</h1>
+      <nav>
+        <a href="index.html">Newest</a>
+        <a href="top.html" class="current">Top Memes</a>
+      </nav>
+    </header>
+
+    <div class="subtitle">Sorted by 🔥 likes from everyone.</div>
+
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Same Firebase config as index.html
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "memes-world-6276b.firebaseapp.com",
+      projectId: "memes-world-6276b",
+      storageBucket: "memes-world-6276b.appspot.com",
+      messagingSenderId: "332915204004",
+      appId: "1:332915204004:web:09074db940dfc1755ceb31",
+      measurementId: "G-CWJX78W20M"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const grid = document.getElementById("grid");
+
+    function makeTile(doc) {
+      const data = doc.data();
+      const score = data.score || 0;
+
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      tile.innerHTML = `
+        <img src="${data.url}" alt="meme" />
+        <button class="like-btn" data-id="${doc.id}">
+          <span>🔥</span>
+          <span class="count">${score}</span>
+        </button>
+      `;
+      return tile;
+    }
+
+    function renderTiles(docs) {
+      grid.innerHTML = "";
+      docs.forEach(doc => grid.appendChild(makeTile(doc)));
+    }
+
+    // Top scored memes
+    db.collection("memes")
+      .orderBy("score", "desc")
+      .limit(30)
+      .onSnapshot(snap => renderTiles(snap.docs));
+
+    // Let people also like from here
+    grid.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".like-btn");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const countSpan = btn.querySelector(".count");
+
+      try {
+        await db.collection("memes").doc(id).update({
+          score: firebase.firestore.FieldValue.increment(1)
+        });
+        countSpan.textContent = Number(countSpan.textContent) + 1;
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
