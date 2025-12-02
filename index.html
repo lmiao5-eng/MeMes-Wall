@@ -20,26 +20,49 @@
       max-width: 1100px;
       background: white;
       border-radius: 20px;
-      padding: 40px 40px 60px;
+      padding: 32px 40px 36px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
     h1 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 30px;
+      margin: 0;
+      font-size: 26px;
       font-weight: 500;
+    }
+    nav a {
+      font-size: 14px;
+      color: #666;
+      text-decoration: none;
+      margin-left: 16px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      border-color: #ddd;
+      background:#fafafa;
+    }
+    nav a.current {
+      border-color: #111;
+      color:#111;
     }
     .top-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 20px;
-      padding: 0 10px;
-      font-size: 18px;
+      margin-bottom: 16px;
+      padding: 0 4px;
+      font-size: 16px;
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 15px;
+      gap: 14px;
+      margin-bottom: 10px;
     }
     .tile {
       width: 100%;
@@ -56,11 +79,43 @@
       height: 100%;
       object-fit: cover;
     }
+    .time-label {
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    .like-btn {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.88);
+      padding: 2px 8px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .like-btn span.count {
+      min-width: 10px;
+      text-align: right;
+    }
+    .like-btn:hover {
+      background: #ffecec;
+    }
     .dropzone {
       padding: 8px 18px;
       border: 1px dashed #999;
       border-radius: 999px;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
       transition: 0.2s;
     }
@@ -72,15 +127,36 @@
       border-color: #2b7cff;
       color: #2b7cff;
     }
-    input[type=file] {
-      display: none;
+    input[type=file] { display: none; }
+
+    .note {
+      font-size: 12px;
+      color: #888;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(3,1fr); }
+      .container { padding: 24px 20px 26px; }
+    }
+    @media (max-width: 550px) {
+      .grid { grid-template-columns: repeat(2,1fr); }
+      header { flex-direction: column; gap: 8px; align-items: flex-start;}
+      .note { text-align: left; }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Welcome to the MeMes’ World</h1>
+    <header>
+      <h1>Welcome to the MeMes’ World</h1>
+      <nav>
+        <a href="index.html" class="current">Newest</a>
+        <a href="top.html">Top Memes</a>
+      </nav>
+    </header>
 
     <div class="top-row">
       <div>Explore More</div>
@@ -88,6 +164,7 @@
     </div>
 
     <div id="grid" class="grid"></div>
+    <div class="note">Once you drop a meme, you can’t delete it.</div>
 
     <input id="fileInput" type="file" accept="image/*" />
   </div>
@@ -97,9 +174,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // 🔥 Your Firebase Config (replace with your real values)
+    // 🔥 Firebase config – fill with your real values
     const firebaseConfig = {
-      apiKey: "AIzaSyC4SFP...YOURVALUE...",
+      apiKey: "YOUR_API_KEY",
       authDomain: "memes-world-6276b.firebaseapp.com",
       projectId: "memes-world-6276b",
       storageBucket: "memes-world-6276b.appspot.com",
@@ -111,16 +188,31 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ☁️ Cloudinary config
+    // ☁️ Cloudinary
     const cloudName = "dnwhmng9l";
     const uploadPreset = "unsigned_meme_upload";
 
-    // UI elements
     const grid = document.getElementById("grid");
     const dropzone = document.getElementById("dropzone");
     const fileInput = document.getElementById("fileInput");
 
-    // 📌 Upload to Cloudinary
+    // --- helper: time ago text ---
+    function timeAgo(date) {
+      if (!date) return "just now";
+      const now = new Date();
+      const diffSec = Math.floor((now - date) / 1000);
+      if (diffSec < 60) return "just now";
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return diffMin + "m ago";
+      const diffHour = Math.floor(diffMin / 60);
+      if (diffHour < 24) return diffHour + "h ago";
+      const diffDay = Math.floor(diffHour / 24);
+      if (diffDay < 7) return diffDay + "d ago";
+      // show short date for older memes
+      return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
+
+    // Upload to Cloudinary
     async function uploadToCloudinary(file) {
       const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
       const formData = new FormData();
@@ -132,7 +224,6 @@
       return data.secure_url;
     }
 
-    // 📌 When user drops or picks a file
     async function handleFiles(files) {
       const file = files[0];
       if (!file) return;
@@ -144,7 +235,8 @@
 
         await db.collection("memes").add({
           url: imageUrl,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          score: 0
         });
 
         dropzone.textContent = "Drop A Meme";
@@ -155,35 +247,62 @@
       }
     }
 
-    // 📌 Make grid
+    function makeTile(doc) {
+      const data = doc.data();
+      const score = data.score || 0;
+      const createdAt = data.createdAt && data.createdAt.toDate
+        ? data.createdAt.toDate()
+        : null;
+      const label = timeAgo(createdAt);
+
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      tile.innerHTML = `
+        <span class="time-label">${label}</span>
+        <img src="${data.url}" alt="meme" />
+        <button class="like-btn" data-id="${doc.id}">
+          <span>🔥</span>
+          <span class="count">${score}</span>
+        </button>
+      `;
+      return tile;
+    }
+
     function renderTiles(docs) {
       grid.innerHTML = "";
-      docs.forEach(doc => {
-        const url = doc.data().url;
-        const tile = document.createElement("div");
-        tile.className = "tile";
-        tile.innerHTML = `<img src="${url}" />`;
-        grid.appendChild(tile);
-      });
-
-      // Fill empty spaces (18 tiles max)
+      docs.forEach(doc => grid.appendChild(makeTile(doc)));
       const remain = 18 - docs.length;
       for (let i = 0; i < remain; i++) {
-        const tile = document.createElement("div");
-        tile.className = "tile";
-        grid.appendChild(tile);
+        const t = document.createElement("div");
+        t.className = "tile";
+        grid.appendChild(t);
       }
     }
 
-    // 📌 Get memes live
+    // Newest first
     db.collection("memes")
       .orderBy("createdAt", "desc")
       .limit(18)
-      .onSnapshot(snap => {
-        renderTiles(snap.docs);
-      });
+      .onSnapshot(snap => renderTiles(snap.docs));
 
-    // 📌 Dropzone events
+    // Like button (event delegation)
+    grid.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".like-btn");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const countSpan = btn.querySelector(".count");
+
+      try {
+        await db.collection("memes").doc(id).update({
+          score: firebase.firestore.FieldValue.increment(1)
+        });
+        countSpan.textContent = Number(countSpan.textContent) + 1;
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // Dropzone events
     dropzone.onclick = () => fileInput.click();
     fileInput.onchange = e => handleFiles(e.target.files);
 
@@ -192,7 +311,6 @@
       dropzone.classList.add("dragover");
     };
     dropzone.ondragleave = () => dropzone.classList.remove("dragover");
-
     dropzone.ondrop = (e) => {
       e.preventDefault();
       dropzone.classList.remove("dragover");
