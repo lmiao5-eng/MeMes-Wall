@@ -21,47 +21,27 @@
     .container {
       width: 100%;
       max-width: 1100px;
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.92);
       border-radius: 26px;
       padding: 28px 36px 34px;
       box-shadow:
         0 18px 60px rgba(15,23,42,0.18),
         0 0 0 1px rgba(255,255,255,0.8);
-      position: relative;
       backdrop-filter: blur(12px);
+      position: relative;
     }
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff8a8a, #ffd36a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.19);
+      margin-bottom: 28px;
     }
 
     h1 {
       margin: 0;
-      font-size: 26px;
-      font-weight: 600;
+      font-size: 28px;
+      font-weight: 700;
     }
 
     .tagline {
@@ -80,35 +60,45 @@
     }
     nav a {
       font-size: 14px;
-      color: #555;
-      text-decoration: none;
       padding: 6px 16px;
       border-radius: 999px;
+      text-decoration: none;
+      color: #555;
       border: 1px solid transparent;
-      line-height: 1.2;
     }
     nav a.current {
       background: #111;
-      border-color: #111;
       color: #fff;
+      border-color: #111;
       font-weight: 500;
     }
     nav a:hover:not(.current) {
       background: #e7e7ea;
     }
 
-    .subtitle {
-      font-size: 14px;
-      color: #777;
+    .top-row {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 14px;
       padding: 0 4px;
+      font-size: 16px;
+    }
+
+    .explore-link {
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: #ccc;
+      text-underline-offset: 3px;
+    }
+    .explore-link:hover {
+      text-decoration-color: #999;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 14px;
-      margin-bottom: 10px;
     }
 
     .tile {
@@ -119,9 +109,9 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(15,23,42,0.04);
-      transform: translateY(0);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.15s ease;
     }
+
     .tile img {
       position: absolute;
       inset: 0;
@@ -130,6 +120,7 @@
       object-fit: cover;
       transition: transform 0.25s ease;
     }
+
     .tile:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 26px rgba(15,23,42,0.18);
@@ -140,90 +131,70 @@
 
     .time-label {
       position: absolute;
-      left: 8px;
       top: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.62);
       padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.62);
-      color: #fff;
       font-size: 10px;
-      line-height: 1.2;
-      letter-spacing: .02em;
+      color: #fff;
     }
 
     .like-btn {
       position: absolute;
-      right: 8px;
       bottom: 8px;
-      border: none;
-      border-radius: 999px;
+      right: 8px;
       background: rgba(255,255,255,0.92);
+      border-radius: 999px;
       padding: 2px 8px;
       font-size: 11px;
-      display: flex;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       gap: 4px;
-      cursor: pointer;
       box-shadow: 0 4px 10px rgba(15,23,42,0.14);
-    }
-    .like-btn span.count {
-      min-width: 10px;
-      text-align: right;
     }
     .like-btn:hover {
       background: #ffe4ef;
     }
 
     .note {
+      text-align: right;
+      margin-top: 14px;
       font-size: 12px;
       color: #888;
-      text-align: right;
-      margin-top: 4px;
     }
 
     #backToTop {
       position: fixed;
       left: 24px;
       bottom: 24px;
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.85);
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid #ddd;
-      font-size: 13px;
       cursor: pointer;
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(6px);
       transition: opacity .25s ease, transform .25s ease;
+      font-size: 13px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      z-index: 10;
     }
     #backToTop.show {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: repeat(3,1fr); }
-      body { padding: 24px; }
-      .container { padding: 24px 20px 26px; }
-    }
-    @media (max-width: 550px) {
-      .grid { grid-template-columns: repeat(2,1fr); }
-      header { flex-direction: column; gap: 8px; align-items: flex-start;}
-      .note { text-align: left; }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
+
     <header>
-      <div class="brand">
-        <div class="logo-dot">M</div>
-        <div>
-          <h1>Top Memes</h1>
-          <div class="tagline">The most loved drops in MeMes’ World.</div>
-        </div>
+      <div>
+        <h1>Top Memes</h1>
+        <div class="tagline">Drop your memes into the commons, no need to log in.</div>
       </div>
 
       <nav>
@@ -232,24 +203,24 @@
       </nav>
     </header>
 
-    <div class="subtitle">Sorted by 🔥 likes from everyone. Tap again to give more love.</div>
+    <div class="top-row">
+      <div class="explore-link" onclick="location.href='index.html'">← Back to Newest</div>
+    </div>
 
     <div id="grid" class="grid"></div>
+
     <div class="note">Once you drop a meme, you can’t delete it.</div>
   </div>
 
-  <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-    ↑ Back to Top
-  </button>
+  <button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑ Back to Top</button>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Same Firebase config
     const firebaseConfig = {
-      apiKey: "AIzaSyC4SFPaa3c9tDnPC5zVxaFHaaijBIG2Xk",
+      apiKey: "AIzaSyC4SFP...REPLACE",
       authDomain: "memes-world-6276b.firebaseapp.com",
       projectId: "memes-world-6276b",
       storageBucket: "memes-world-6276b.appspot.com",
@@ -257,84 +228,59 @@
       appId: "1:332915204004:web:09074db940dfc1755ceb31",
       measurementId: "G-CWJX78W20M"
     };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    function timeAgo(ts) {
+      if (!ts) return "";
+      const sec = (Date.now() - ts.toMillis()) / 1000;
+      if (sec < 60) return "just now";
+      if (sec < 3600) return Math.floor(sec/60)+"m ago";
+      if (sec < 86400) return Math.floor(sec/3600)+"h ago";
+      return Math.floor(sec/86400)+"d ago";
+    }
+
     const grid = document.getElementById("grid");
-    const backToTop = document.getElementById("backToTop");
-
-    function timeAgo(date) {
-      if (!date) return "just now";
-      const now = new Date();
-      const diffSec = Math.floor((now - date) / 1000);
-      if (diffSec < 60) return "just now";
-      const diffMin = Math.floor(diffSec / 60);
-      if (diffMin < 60) return diffMin + "m ago";
-      const diffHour = Math.floor(diffMin / 60);
-      if (diffHour < 24) return diffHour + "h ago";
-      const diffDay = Math.floor(diffHour / 24);
-      if (diffDay < 7) return diffDay + "d ago";
-      return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-    }
-
-    function makeTile(doc) {
-      const data = doc.data();
-      const score = data.score || 0;
-      const createdAt = data.createdAt && data.createdAt.toDate
-        ? data.createdAt.toDate()
-        : null;
-      const label = timeAgo(createdAt);
-
-      const tile = document.createElement("div");
-      tile.className = "tile";
-      tile.innerHTML = `
-        <span class="time-label">${label}</span>
-        <img src="${data.url}" alt="meme" />
-        <button class="like-btn" data-id="${doc.id}">
-          <span>🔥</span>
-          <span class="count">${score}</span>
-        </button>
-      `;
-      return tile;
-    }
 
     function renderTiles(docs) {
       grid.innerHTML = "";
-      docs.forEach(doc => grid.appendChild(makeTile(doc)));
+      docs.forEach(doc => {
+        const d = doc.data();
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.innerHTML = `
+          <img src="${d.url}" />
+          <div class="time-label">${timeAgo(d.createdAt)}</div>
+          <button class="like-btn">❤️ <span class="count">${d.likes||0}</span></button>
+        `;
+
+        tile.querySelector(".like-btn").onclick = () => {
+          db.collection("memes").doc(doc.id).update({
+            likes: (d.likes || 0) + 1
+          });
+        };
+
+        grid.appendChild(tile);
+      });
+
+      const remain = 18 - docs.length;
+      for (let i = 0; i < remain; i++) {
+        const placeholder = document.createElement("div");
+        placeholder.className = "tile";
+        grid.appendChild(placeholder);
+      }
     }
 
-    // Top scored memes
     db.collection("memes")
-      .orderBy("score", "desc")
-      .limit(30)
+      .orderBy("likes","desc")
+      .limit(18)
       .onSnapshot(snap => renderTiles(snap.docs));
 
-    // Like from here too
-    grid.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".like-btn");
-      if (!btn) return;
-      const id = btn.getAttribute("data-id");
-      const countSpan = btn.querySelector(".count");
-
-      try {
-        await db.collection("memes").doc(id).update({
-          score: firebase.firestore.FieldValue.increment(1)
-        });
-        countSpan.textContent = Number(countSpan.textContent) + 1;
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    // Back to top visibility
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 200) {
-        backToTop.classList.add("show");
-      } else {
-        backToTop.classList.remove("show");
-      }
+    // Back to Top logic
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll",()=>{
+      if (window.scrollY>140) backToTop.classList.add("show");
+      else backToTop.classList.remove("show");
     });
   </script>
 </body>
