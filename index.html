@@ -7,43 +7,79 @@
 
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background: #f6f6f6;
+      background: radial-gradient(circle at top left, #f7f3ff 0%, #f3fbff 40%, #fdf7f3 100%);
       display: flex;
       justify-content: center;
       padding: 40px;
+      color: #111;
     }
+
     .container {
       width: 100%;
       max-width: 1100px;
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 32px 40px 36px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.94);
+      border-radius: 26px;
+      padding: 28px 36px 34px;
+      box-shadow:
+        0 18px 60px rgba(15,23,42,0.18),
+        0 0 0 1px rgba(255,255,255,0.8);
       position: relative;
+      backdrop-filter: blur(12px);
     }
+
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff8a8a, #ffd36a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.19);
+    }
+
     h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 600;
     }
 
-    /* Top-right nav like pill buttons */
+    .tagline {
+      font-size: 13px;
+      color: #777;
+      margin-top: 2px;
+    }
+
+    /* pill-nav */
     nav {
       display: inline-flex;
       padding: 4px;
       border-radius: 999px;
-      background: #f4f4f4;
+      background: #f3f3f5;
       gap: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06) inset;
     }
+
     nav a {
       font-size: 14px;
       color: #555;
@@ -53,14 +89,16 @@
       border: 1px solid transparent;
       line-height: 1.2;
     }
+
     nav a.current {
-      background: #ffffff;
+      background: #111;
       border-color: #111;
-      color: #111;
+      color: #fff;
       font-weight: 500;
     }
+
     nav a:hover:not(.current) {
-      background: #eaeaea;
+      background: #e7e7ea;
     }
 
     .top-row {
@@ -77,6 +115,7 @@
       text-decoration: underline;
       text-decoration-color: #d0d0d0;
       text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
     }
     .explore-link:hover {
       text-decoration-color: #999;
@@ -84,21 +123,32 @@
 
     /* Drop A Meme button */
     .dropzone {
-      padding: 8px 22px;
+      padding: 9px 22px;
       border-radius: 999px;
-      border: 1px dashed #999;
+      border: 1px dashed #b1b1b1;
       font-size: 14px;
       cursor: pointer;
-      transition: 0.2s;
-      background: #fff;
+      background: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+      transition: 0.18s ease;
+    }
+    .dropzone::before {
+      content: "⬆︎";
+      font-size: 14px;
     }
     .dropzone:hover {
-      background: #f7f7f7;
+      background: #fef7f3;
+      border-color: #ffb27c;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
     }
     .dropzone.dragover {
-      background: #e8f2ff;
-      border-color: #2b7cff;
-      color: #2b7cff;
+      background: #fff3e5;
+      border-color: #ff914d;
+      color: #d45500;
     }
 
     .grid {
@@ -107,54 +157,70 @@
       gap: 14px;
       margin-bottom: 10px;
     }
+
     .tile {
       width: 100%;
       padding-top: 100%;
-      background: #dedede;
-      border-radius: 10px;
+      background: #e3e3e6;
+      border-radius: 14px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.04);
+      transform: translateY(0);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
+
     .tile img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.25s ease;
+    }
+
+    .tile:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(15,23,42,0.18);
+    }
+    .tile:hover img {
+      transform: scale(1.03);
     }
 
     .time-label {
       position: absolute;
-      left: 6px;
-      top: 6px;
+      left: 8px;
+      top: 8px;
       padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0,0,0,0.62);
       color: #fff;
       font-size: 10px;
       line-height: 1.2;
+      letter-spacing: .02em;
     }
 
     .like-btn {
       position: absolute;
-      right: 6px;
-      bottom: 6px;
+      right: 8px;
+      bottom: 8px;
       border: none;
       border-radius: 999px;
-      background: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.92);
       padding: 2px 8px;
       font-size: 11px;
       display: flex;
       align-items: center;
       gap: 4px;
       cursor: pointer;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.14);
     }
     .like-btn span.count {
       min-width: 10px;
       text-align: right;
     }
     .like-btn:hover {
-      background: #ffecec;
+      background: #ffe4ef;
     }
 
     input[type=file] { display: none; }
@@ -171,7 +237,7 @@
       position: fixed;
       left: 24px;
       bottom: 24px;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.94);
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid #ddd;
@@ -204,7 +270,14 @@
 <body>
   <div class="container">
     <header>
-      <h1>Welcome to the MeMes’ World</h1>
+      <div class="brand">
+        <div class="logo-dot">M</div>
+        <div>
+          <h1>Welcome to the MeMes’ World</h1>
+          <div class="tagline">Drop your memes into the commons, no take-backs.</div>
+        </div>
+      </div>
+
       <nav>
         <a href="index.html" class="current">Newest</a>
         <a href="top.html">Top Memes</a>
@@ -232,7 +305,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // 🔥 Firebase config (from your project)
+    // 🔥 Firebase config (yours)
     const firebaseConfig = {
       apiKey: "AIzaSyC4SFPaa3c9tDnPC5zVxaFHaaijBIG2Xk",
       authDomain: "memes-world-6276b.firebaseapp.com",
