@@ -79,58 +79,59 @@ nav a {
 nav a.current { background:#111; color:#fff; }
 nav a:hover:not(.current) { background:#e5e5e8; }
 
-/* GRID ------------------------------------------ */
+/* GRID — LARGER TILES --------------------------- */
 .grid {
-  margin-top: 26px;
+  margin-top: 30px;
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
-  gap:16px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap:22px;
 }
 .tile {
   width:100%;
   padding-top:100%;
   position:relative;
   background:#ddd;
-  border-radius:16px;
+  border-radius:20px;
   overflow:hidden;
-  box-shadow:0 6px 14px rgba(0,0,0,0.07);
+  box-shadow:0 10px 26px rgba(0,0,0,0.12);
   transition:0.3s;
 }
 .tile:hover {
   transform:translateY(-6px);
-  box-shadow:0 12px 32px rgba(255,140,200,0.3);
+  box-shadow:0 18px 40px rgba(255,140,200,0.35);
 }
 .tile img {
   position:absolute;
   width:100%; height:100%;
-  object-fit:cover; inset:0;
+  inset:0;
+  object-fit:cover;
 }
 
 /* LABELS ---------------------------------------- */
 .time-label {
   position:absolute;
-  top:8px; left:8px;
-  padding:2px 8px;
+  top:10px; left:10px;
+  padding:3px 10px;
   background:rgba(0,0,0,0.65);
   color:#fff;
-  font-size:11px;
+  font-size:12px;
   border-radius:999px;
 }
 .like-btn {
   position:absolute;
-  right:8px; bottom:8px;
-  padding:4px 8px;
-  font-size:11px;
+  right:10px; bottom:10px;
+  padding:6px 12px;
+  font-size:12px;
   border:none;
   border-radius:999px;
   cursor:pointer;
   background:white;
-  box-shadow:0 2px 4px rgba(0,0,0,0.12);
+  box-shadow:0 3px 6px rgba(0,0,0,0.14);
 }
 
 /* BACK LINK -------------------------------------- */
 .back-link {
-  margin-top: 18px;
+  margin-top: 20px;
   font-size:14px;
   text-decoration:underline;
   cursor:pointer;
@@ -140,7 +141,7 @@ nav a:hover:not(.current) { background:#e5e5e8; }
 
 /* FOOTER ----------------------------------------- */
 footer {
-  margin-top: 20px;
+  margin-top: 25px;
   font-size:12px;
   color:#777;
   text-align:right;
@@ -165,6 +166,8 @@ footer {
 /* MOBILE ----------------------------------------- */
 @media (max-width:650px){
   .container { padding:22px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:14px; }
+  .tile { border-radius:16px; }
 }
 </style>
 </head>
@@ -186,7 +189,7 @@ for (let i=0;i<18;i++){
   <header>
     <div>
       <h1>Top Memes</h1>
-      <div class="tagline">Drop your memes into the commons, no need to log in.</div>
+      <div class="tagline">The 10 most loved memes in MeMes’ World.</div>
     </div>
 
     <nav>
@@ -223,7 +226,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 
-// Helpers
 function timeAgo(ts){
   if(!ts) return "just now";
   const sec=(Date.now()-ts.toMillis())/1000;
@@ -233,7 +235,7 @@ function timeAgo(ts){
   return Math.floor(sec/86400)+"d ago";
 }
 
-// Render tiles
+// Render top 10
 const grid=document.getElementById("grid");
 function render(docs){
   grid.innerHTML="";
@@ -253,10 +255,10 @@ function render(docs){
   });
 }
 
-// Load top by likes
+// Load top 10 by likes
 db.collection("memes")
   .orderBy("likes","desc")
-  .limit(30)
+  .limit(10)
   .onSnapshot(s=>render(s.docs));
 
 // Back to top
