@@ -20,14 +20,14 @@
       max-width: 1100px;
       background: white;
       border-radius: 20px;
-      padding: 32px 40px 50px;
+      padding: 32px 40px 36px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     }
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     h1 {
       margin: 0;
@@ -61,6 +61,7 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 14px;
+      margin-bottom: 10px;
     }
     .tile {
       width: 100%;
@@ -76,6 +77,17 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+    .time-label {
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 10px;
+      line-height: 1.2;
     }
     .like-btn {
       position: absolute;
@@ -99,13 +111,21 @@
       background: #ffecec;
     }
 
+    .note {
+      font-size: 12px;
+      color: #888;
+      text-align: right;
+      margin-top: 4px;
+    }
+
     @media (max-width: 900px) {
       .grid { grid-template-columns: repeat(3,1fr); }
-      .container { padding: 24px 20px 32px; }
+      .container { padding: 24px 20px 26px; }
     }
     @media (max-width: 550px) {
       .grid { grid-template-columns: repeat(2,1fr); }
       header { flex-direction: column; gap: 8px; align-items: flex-start;}
+      .note { text-align: left; }
     }
   </style>
 </head>
@@ -123,6 +143,7 @@
     <div class="subtitle">Sorted by 🔥 likes from everyone.</div>
 
     <div id="grid" class="grid"></div>
+    <div class="note">Once you drop a meme, you can’t delete it.</div>
   </div>
 
   <!-- Firebase -->
@@ -141,17 +162,38 @@
       measurementId: "G-CWJX78W20M"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.firestore();
     const grid = document.getElementById("grid");
+
+    function timeAgo(date) {
+      if (!date) return "just now";
+      const now = new Date();
+      const diffSec = Math.floor((now - date) / 1000);
+      if (diffSec < 60) return "just now";
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return diffMin + "m ago";
+      const diffHour = Math.floor(diffMin / 60);
+      if (diffHour < 24) return diffHour + "h ago";
+      const diffDay = Math.floor(diffHour / 24);
+      if (diffDay < 7) return diffDay + "d ago";
+      return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
 
     function makeTile(doc) {
       const data = doc.data();
       const score = data.score || 0;
+      const createdAt = data.createdAt && data.createdAt.toDate
+        ? data.createdAt.toDate()
+        : null;
+      const label = timeAgo(createdAt);
 
       const tile = document.createElement("div");
       tile.className = "tile";
       tile.innerHTML = `
+        <span class="time-label">${label}</span>
         <img src="${data.url}" alt="meme" />
         <button class="like-btn" data-id="${doc.id}">
           <span>🔥</span>
@@ -172,7 +214,7 @@
       .limit(30)
       .onSnapshot(snap => renderTiles(snap.docs));
 
-    // Let people also like from here
+    // Likes from here too
     grid.addEventListener("click", async (e) => {
       const btn = e.target.closest(".like-btn");
       if (!btn) return;
