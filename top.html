@@ -7,41 +7,76 @@
 
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background: #f6f6f6;
+      background: radial-gradient(circle at top left, #f7f3ff 0%, #f3fbff 40%, #fdf7f3 100%);
       display: flex;
       justify-content: center;
       padding: 40px;
+      color: #111;
     }
+
     .container {
       width: 100%;
       max-width: 1100px;
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 32px 40px 36px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.94);
+      border-radius: 26px;
+      padding: 28px 36px 34px;
+      box-shadow:
+        0 18px 60px rgba(15,23,42,0.18),
+        0 0 0 1px rgba(255,255,255,0.8);
       position: relative;
+      backdrop-filter: blur(12px);
     }
+
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff8a8a, #ffd36a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.19);
+    }
+
     h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 600;
+    }
+
+    .tagline {
+      font-size: 13px;
+      color: #777;
+      margin-top: 2px;
     }
 
     nav {
       display: inline-flex;
       padding: 4px;
       border-radius: 999px;
-      background: #f4f4f4;
+      background: #f3f3f5;
       gap: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06) inset;
     }
     nav a {
       font-size: 14px;
@@ -53,13 +88,13 @@
       line-height: 1.2;
     }
     nav a.current {
-      background: #ffffff;
+      background: #111;
       border-color: #111;
-      color: #111;
+      color: #fff;
       font-weight: 500;
     }
     nav a:hover:not(.current) {
-      background: #eaeaea;
+      background: #e7e7ea;
     }
 
     .subtitle {
@@ -75,13 +110,17 @@
       gap: 14px;
       margin-bottom: 10px;
     }
+
     .tile {
       width: 100%;
       padding-top: 100%;
-      background: #dedede;
-      border-radius: 10px;
+      background: #e3e3e6;
+      border-radius: 14px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.04);
+      transform: translateY(0);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
     .tile img {
       position: absolute;
@@ -89,40 +128,50 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.25s ease;
+    }
+    .tile:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(15,23,42,0.18);
+    }
+    .tile:hover img {
+      transform: scale(1.03);
     }
 
     .time-label {
       position: absolute;
-      left: 6px;
-      top: 6px;
+      left: 8px;
+      top: 8px;
       padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0,0,0,0.62);
       color: #fff;
       font-size: 10px;
       line-height: 1.2;
+      letter-spacing: .02em;
     }
 
     .like-btn {
       position: absolute;
-      right: 6px;
-      bottom: 6px;
+      right: 8px;
+      bottom: 8px;
       border: none;
       border-radius: 999px;
-      background: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.92);
       padding: 2px 8px;
       font-size: 11px;
       display: flex;
       align-items: center;
       gap: 4px;
       cursor: pointer;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.14);
     }
     .like-btn span.count {
       min-width: 10px;
       text-align: right;
     }
     .like-btn:hover {
-      background: #ffecec;
+      background: #ffe4ef;
     }
 
     .note {
@@ -136,7 +185,7 @@
       position: fixed;
       left: 24px;
       bottom: 24px;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.94);
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid #ddd;
@@ -169,14 +218,21 @@
 <body>
   <div class="container">
     <header>
-      <h1>Top Memes</h1>
+      <div class="brand">
+        <div class="logo-dot">M</div>
+        <div>
+          <h1>Top Memes</h1>
+          <div class="tagline">The most loved drops in MeMes’ World.</div>
+        </div>
+      </div>
+
       <nav>
         <a href="index.html">Newest</a>
         <a href="top.html" class="current">Top Memes</a>
       </nav>
     </header>
 
-    <div class="subtitle">Sorted by 🔥 likes from everyone.</div>
+    <div class="subtitle">Sorted by 🔥 likes from everyone. Tap again to give more love.</div>
 
     <div id="grid" class="grid"></div>
     <div class="note">Once you drop a meme, you can’t delete it.</div>
