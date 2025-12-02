@@ -247,6 +247,7 @@ for (let i = 0; i < 18; i++) {
     <nav>
       <a href="index.html">Newest</a>
       <a href="top.html" class="current">Top Memes</a>
+      <a href="gallery.html">Gallery</a>
     </nav>
   </header>
 
@@ -271,7 +272,7 @@ for (let i = 0; i < 18; i++) {
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 <script>
-// ---- SAME FIREBASE CONFIG AS index.html ----
+// ---- SAME FIREBASE CONFIG AS OTHER PAGES ----
 const firebaseConfig = {
   apiKey: "AIzaSyCX45PRa3xc9tDnPC5zVxaFHaaijB1g2Xk",
   authDomain: "memes--world-6276b.firebaseapp.com",
@@ -317,7 +318,6 @@ function renderTop(docs) {
     grid.appendChild(tile);
   });
 
-  // Optional: fill up to 18 tiles with placeholders
   const remain = 18 - docs.length;
   for (let i = 0; i < remain; i++) {
     const placeholder = document.createElement("div");
